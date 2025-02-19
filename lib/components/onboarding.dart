@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 import 'package:pamphere/components/constants.dart';
-import 'package:pamphere/pages/home.dart';
+import 'package:pamphere/components/widgets.dart';
+// import 'package:pamphere/pages/home.dart';
+import 'package:pamphere/pages/login.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onboarding extends StatefulWidget {
@@ -57,6 +59,7 @@ class _OnboardingState extends State<Onboarding> {
             ],
           ),
           Container(
+              margin: EdgeInsets.symmetric(horizontal: defaultPadding),
               alignment: Alignment(0, 0.9),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -70,57 +73,39 @@ class _OnboardingState extends State<Onboarding> {
                   ),
                   SizedBox(height: defaultPadding),
                   isLastPage
-                      ? GestureDetector(
-                          onTap: () {
+                      ? PrimaryButton(
+                          ontap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HomePage(),
+                                  builder: (context) => LoginPage(),
                                 ));
                           },
-                          child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: defaultPadding / 2),
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: defaultPadding),
-                              decoration: BoxDecoration(
-                                  color: TWColors.indigo.shade400,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(defaultPadding))),
-                              width: double.infinity,
-                              child: Center(
-                                  child: Text(
-                                'Get Started',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: TWColors.white,
-                                    fontWeight: FontWeight.bold),
-                              ))))
-                      : GestureDetector(
-                          onTap: () {
+                          child: Center(
+                              child: Text(
+                            'Get Started',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: TWColors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                        )
+                      : PrimaryButton(
+                          ontap: () {
                             pageController.nextPage(
                               duration: Durations.medium4,
                               curve: Curves.easeIn,
                             );
                           },
-                          child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: defaultPadding / 2),
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: defaultPadding),
-                              decoration: BoxDecoration(
-                                  color: TWColors.indigo.shade400,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(defaultPadding))),
-                              width: double.infinity,
-                              child: Center(
-                                  child: Text(
-                                'Next',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: TWColors.white,
-                                    fontWeight: FontWeight.bold),
-                              )))),
+                          child: Center(
+                            child: Text(
+                              'Next',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: TWColors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )),
                   SizedBox(height: defaultPadding),
                   GestureDetector(
                       onTap: () {
@@ -163,9 +148,9 @@ class OnboardingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-                // color: TWColors.black,
-                height: screenHeight * 0.7,
-                child: Image.asset(image)),
+              height: screenHeight * 0.7,
+              child: Image.asset(image),
+            ),
             Text(
               heading,
               textAlign: TextAlign.center,

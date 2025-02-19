@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pamphere/components/onboarding.dart';
-import 'package:pamphere/pages/home.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 

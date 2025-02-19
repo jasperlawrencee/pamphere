@@ -1,5 +1,5 @@
-name: pamphere
-description: "A booking app for salons and freelancers"
+name: post_repository
+description: "Dart package that manages posts"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -35,19 +35,10 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  flutter_tailwind_colors: ^0.0.3
-  smooth_page_indicator: ^1.2.0+3
-  font_awesome_flutter: ^10.8.0
-  shared_preferences: ^2.5.1
-  cupertino_icons: ^1.0.6
+  cloud_firestore: ^5.6.4
   firebase_core: ^3.10.1
   firebase_auth: ^5.4.1
-  flutter_bloc: ^9.0.0
   equatable: ^2.0.7
-
-  # Custom Repository Here
-  user_repository:
-    path: packages/user_repository
 
 dev_dependencies:
   flutter_test:
@@ -101,24 +92,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-  assets:
-    - assets/images/
-
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/poppins/Poppins-Thin.ttf
-          weight: 200
-        - asset: assets/fonts/poppins/Poppins-Light.ttf
-          weight: 300
-        - asset: assets/fonts/poppins/Poppins-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/poppins/Poppins-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/poppins/Poppins-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/poppins/Poppins-Black.ttf
-          weight: 800
-        
