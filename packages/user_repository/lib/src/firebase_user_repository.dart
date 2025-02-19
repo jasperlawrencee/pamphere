@@ -1,10 +1,9 @@
-import 'dart:nativewrappers/_internal/vm/lib/developer.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:user_repository/src/models/my_user.dart';
 import 'package:user_repository/src/user_repo.dart';
 import 'package:user_repository/user_repository.dart';
+import 'dart:developer';
 
 class FirebaseUserRepository implements UserRepository {
   FirebaseUserRepository({

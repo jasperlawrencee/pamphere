@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
+import 'package:pamphere/pages/signup.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -168,12 +169,16 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: defaultPadding * 2),
               Center(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => Signup(),
+                    ));
+                  },
                   child: Text(
                     'Create an account',
                     style: TextStyle(
                       color: primaryColor,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

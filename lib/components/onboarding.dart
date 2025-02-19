@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
-// import 'package:pamphere/pages/home.dart';
-import 'package:pamphere/pages/login.dart';
+import 'package:pamphere/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onboarding extends StatefulWidget {
@@ -74,12 +76,14 @@ class _OnboardingState extends State<Onboarding> {
                   SizedBox(height: defaultPadding),
                   isLastPage
                       ? PrimaryButton(
-                          ontap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginPage(),
-                                ));
+                          ontap: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.setBool('hasSeenOnboarding', true);
+                            log("User has seen onboarding");
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => HomePage(),
+                            ));
                           },
                           child: Center(
                               child: Text(

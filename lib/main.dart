@@ -1,5 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:pamphere/components/onboarding.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pamphere/app.dart';
+import 'package:pamphere/simple_bloc_observer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:user_repository/user_repository.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -8,24 +15,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
-}
+  Bloc.observer = SimpleBlocObserver();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final prefs = await SharedPreferences.getInstance();
+  final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: Onboarding(),
-    );
-  }
+  runApp(MyApp(
+    FirebaseUserRepository(),
+    hasSeenOnboarding: hasSeenOnboarding,
+  ));
 }

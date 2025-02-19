@@ -1,0 +1,13 @@
+flutter_native_splash:
+  color: "#6366f1"
+  color_dark: "#000000"
+  image: assets/logos/PamphereLogo.png
+  image_dark: assets/logos/PamphereLogo.png
+
+  android_12:
+    color: "#6366f1"
+    color_dark: "#000000"
+    image: assets/logos/PamphereLogo.png
+    image_dark: assets/logos/PamphereLogo.png
+  
+  web: false
