@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pamphere/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:pamphere/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:pamphere/components/onboarding.dart';
 import 'package:pamphere/pages/home.dart';
 import 'package:pamphere/pages/login.dart';
@@ -35,7 +36,12 @@ class MyAppWidget extends StatelessWidget {
               } else {
                 //when NO user authenticated
                 log('No authenticated user');
-                return LoginPage();
+                return BlocProvider<SignInBloc>(
+                  create: (context) => SignInBloc(
+                      userRepository:
+                          context.read<AuthenticationBloc>().userRepository),
+                  child: LoginPage(),
+                );
               }
             })
           : Onboarding(),
