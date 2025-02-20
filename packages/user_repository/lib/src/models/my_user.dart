@@ -5,12 +5,14 @@ class MyUser extends Equatable {
   final String id;
   final String email;
   final String name;
+  final String password;
   final String? picture;
 
   const MyUser({
     required this.id,
     required this.email,
     required this.name,
+    required this.password,
     required this.picture,
   });
 
@@ -19,6 +21,7 @@ class MyUser extends Equatable {
     id: '',
     email: '',
     name: '',
+    password: '',
     picture: '',
   );
 
@@ -27,12 +30,14 @@ class MyUser extends Equatable {
     String? id,
     String? email,
     String? name,
+    String? password,
     String? picture,
   }) {
     return MyUser(
       id: id ?? this.id,
       email: email ?? this.email,
       name: name ?? this.name,
+      password: password ?? this.password,
       picture: picture ?? this.picture,
     );
   }
@@ -48,6 +53,7 @@ class MyUser extends Equatable {
       id: id,
       email: email,
       name: name,
+      password: password,
       picture: picture,
     );
   }
@@ -57,6 +63,7 @@ class MyUser extends Equatable {
       id: entity.id,
       email: entity.email,
       name: entity.name,
+      password: entity.password,
       picture: entity.picture,
     );
   }

@@ -32,7 +32,12 @@ class MyAppWidget extends StatelessWidget {
               if (state.status == AuthenticationStatus.authenticated) {
                 //when user is authenticated
                 log('User already authenticated');
-                return HomePage();
+                return BlocProvider(
+                  create: (context) => SignInBloc(
+                      userRepository:
+                          context.read<AuthenticationBloc>().userRepository),
+                  child: HomePage(),
+                );
               } else {
                 //when NO user authenticated
                 log('No authenticated user');

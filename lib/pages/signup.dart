@@ -41,6 +41,7 @@ class _SignupState extends State<Signup> {
             signUpRequired = false;
           });
           ToastNotifications().sucessToast(message: "Created Account");
+          // navigate to welcome screen
         } else if (state is SignupProcess) {
           setState(() {
             signUpRequired = true;
