@@ -52,6 +52,31 @@ class SecondaryButton extends StatelessWidget {
   }
 }
 
+class TertiaryButton extends StatelessWidget {
+  Function() ontap;
+  Widget child;
+
+  TertiaryButton({
+    super.key,
+    required this.ontap,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: ontap,
+        child: Container(
+            padding: EdgeInsets.symmetric(
+                vertical: defaultPadding, horizontal: defaultPadding / 2),
+            decoration: BoxDecoration(
+                color: TWColors.red.shade200,
+                borderRadius: BorderRadius.all(Radius.circular(24))),
+            width: double.infinity,
+            child: Center(child: child)));
+  }
+}
+
 class MyTextFormField extends StatelessWidget {
   final String? Function(String?) validator;
   final TextEditingController controller;
@@ -116,6 +141,65 @@ class ToastNotifications {
       type: ToastificationType.error,
       autoCloseDuration: Duration(seconds: 5),
       alignment: Alignment.topCenter,
+    );
+  }
+
+  infoToast({required String message}) {
+    toastification.show(
+      title: Text(message),
+      style: ToastificationStyle.flatColored,
+      type: ToastificationType.info,
+      autoCloseDuration: Duration(seconds: 5),
+      alignment: Alignment.topCenter,
+    );
+  }
+}
+
+class ButtonSetting extends StatelessWidget {
+  IconData icon;
+  String label;
+  Widget endIcon;
+
+  ButtonSetting({
+    required this.icon,
+    required this.label,
+    required this.endIcon,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: defaultPadding),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    color: TWColors.indigo,
+                  ),
+                  SizedBox(width: defaultPadding),
+                  Text(
+                    label,
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ],
+              ),
+              endIcon,
+            ],
+          ),
+          SizedBox(height: defaultPadding / 2),
+          Divider(color: TWColors.gray.shade300),
+        ],
+      ),
     );
   }
 }

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pamphere/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:pamphere/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:pamphere/blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:pamphere/blocs/update_user_info_bloc/update_user_info_bloc.dart';
 import 'package:pamphere/components/onboarding.dart';
 import 'package:pamphere/pages/home.dart';
 import 'package:pamphere/pages/login.dart';
@@ -32,10 +34,34 @@ class MyAppWidget extends StatelessWidget {
               if (state.status == AuthenticationStatus.authenticated) {
                 //when user is authenticated
                 log('User already authenticated');
-                return BlocProvider(
-                  create: (context) => SignInBloc(
-                      userRepository:
-                          context.read<AuthenticationBloc>().userRepository),
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => SignInBloc(
+                        userRepository:
+                            context.read<AuthenticationBloc>().userRepository,
+                      ),
+                    ),
+                    BlocProvider(
+                      create: (context) => UpdateUserInfoBloc(
+                          userRepository: context
+                              .read<AuthenticationBloc>()
+                              .userRepository),
+                    ),
+                    BlocProvider(
+                      create: (context) => MyUserBloc(
+                          myUserRepository:
+                              context.read<AuthenticationBloc>().userRepository)
+                        ..add(
+                          GetMyUser(
+                              myUserId: context
+                                  .read<AuthenticationBloc>()
+                                  .state
+                                  .user!
+                                  .uid),
+                        ),
+                    ),
+                  ],
                   child: HomePage(),
                 );
               } else {

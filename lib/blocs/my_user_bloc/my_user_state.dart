@@ -1,6 +1,6 @@
 part of 'my_user_bloc.dart';
 
-enum MyUserStatus { sucess, loading, failure }
+enum MyUserStatus { success, loading, failure }
 
 class MyUserState extends Equatable {
   final MyUserStatus status;
@@ -14,10 +14,10 @@ class MyUserState extends Equatable {
   const MyUserState.loading() : this._();
 
   const MyUserState.success(MyUser user)
-      : this._(status: MyUserStatus.sucess, user: user);
+      : this._(status: MyUserStatus.success, user: user);
 
   const MyUserState.failure() : this._(status: MyUserStatus.failure);
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [status, user];
 }

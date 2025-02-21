@@ -143,16 +143,22 @@ class _SignupState extends State<Signup> {
                   ontap: !signUpRequired
                       ? () {
                           if (formKey.currentState!.validate()) {
+                            // Declare MyUser variable
                             MyUser myUser = MyUser.emptyUser;
+
+                            // Gives variable values to give to firestore
                             myUser = myUser.copyWith(
                               email: emailController.text,
                               name: nameController.text,
+                              password: passwordController.text,
                             );
 
+                            // Logs user in
                             setState(() {
                               context.read<SignUpBloc>().add(SignUpRequired(
                                   myUser, passwordController.text));
                             });
+
                             nameController.clear();
                             emailController.clear();
                             passwordController.clear();

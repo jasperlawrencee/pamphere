@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:user_repository/src/models/my_user.dart';
 import 'package:user_repository/src/user_repo.dart';
 import 'package:user_repository/user_repository.dart';
@@ -88,5 +91,27 @@ class FirebaseUserRepository implements UserRepository {
       final user = firebaseUser;
       return user;
     });
+  }
+
+  @override
+  Future<String> uploadPicutre(String file, String userId) async {
+    try {
+      File imageFile = File(file);
+      Reference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('$userId/profilePicutre/${userId}_lead');
+
+      await firebaseStorageRef.putFile(imageFile);
+      String url = await firebaseStorageRef.getDownloadURL();
+
+      await userCollection.doc(userId).update({
+        'picture': url,
+      });
+
+      return url;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 }

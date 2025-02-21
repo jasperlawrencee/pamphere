@@ -15,4 +15,6 @@ abstract class UserRepository {
   Future<void> setUserData(MyUser myUser);
 
   Future<MyUser> getMyUser(String myUserId);
+
+  Future<String> uploadPicutre(String file, String userId);
 }
