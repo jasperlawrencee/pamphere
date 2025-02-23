@@ -9,7 +9,6 @@ import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
 import 'package:pamphere/pages/profile.dart';
 import 'package:user_repository/user_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -45,7 +44,6 @@ class _HomePageState extends State<HomePage> {
               Spacer(),
               GestureDetector(
                 onTap: () {
-                  //logout
                   context.read<SignInBloc>().add(const SignOutRequired());
                   ToastNotifications().infoToast(message: "User Logged Out");
                 },
@@ -75,6 +73,7 @@ class _HomePageState extends State<HomePage> {
           title: BlocBuilder<MyUserBloc, MyUserState>(
             builder: (context, state) {
               if (state.status == MyUserStatus.success) {
+                final firstName = state.user!.name.split(' ')[0];
                 return Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Welcome 👋",
+                              "Welcome, $firstName! 👋",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -108,15 +107,20 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    // Displays placeholder profile icon
-                    state.user!.picture == ""
-                        ? GestureDetector(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProfilePage(),
-                                )),
-                            child: Container(
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) => MyUserBloc(
+                                  myUserRepository:
+                                      context.read<UserRepository>()),
+                              // Pass User Details Here
+                              child: ProfilePage(),
+                            ),
+                          )),
+                      child: state.user!.picture == ""
+                          ? Container(
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
@@ -127,15 +131,31 @@ class _HomePageState extends State<HomePage> {
                                 Icons.person_outline,
                                 color: TWColors.indigo,
                               ),
+                            )
+                          : Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: TWColors.indigo.shade300,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      state.user!.picture!,
+                                    ),
+                                  )),
                             ),
-                          )
-                        // Display profile picture here
-                        : Text('user has profile picture'),
+                    ),
                   ],
                 );
               } else {
-                // insert skeleton ui
-                return Container();
+                // insert skeleton loading ui
+                return Container(
+                  height: 10,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: TWColors.neutral,
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                );
               }
             },
           ),
@@ -146,7 +166,6 @@ class _HomePageState extends State<HomePage> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                // Serch Bar
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(

@@ -7,7 +7,9 @@ import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({
+    super.key,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -32,7 +34,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     (constraints.maxHeight - kToolbarHeight) /
                         (MediaQuery.of(context).size.height * 0.25 -
                             kToolbarHeight);
-
                 return FlexibleSpaceBar(
                   title: percentage < 0.5
                       ? Text(
@@ -91,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       SizedBox(height: defaultPadding),
                       Text(
-                        "Jose Rizal",
+                        'Jose Rizal',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
@@ -99,10 +100,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       Text(
-                        "samplemailthislong@email.com",
+                        'sampleEmail@likethis.com',
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.normal,
                           color: Colors.white,
                         ),
                       ),
@@ -318,7 +319,7 @@ void showLogoutDialog(BuildContext context) {
             isDestructiveAction: true,
             onPressed: () {
               Navigator.of(context).pop();
-              // context.read<SignInBloc>().add(SignOutRequired());
+              context.read<SignInBloc>().add(SignOutRequired());
             },
             child: Text('Logout'),
           ),
@@ -340,7 +341,7 @@ void showLogoutDialog(BuildContext context) {
             child: Text('Logout'),
             onPressed: () {
               Navigator.of(context).pop();
-              // context.read<SignInBloc>().add(SignOutRequired());
+              context.read<SignInBloc>().add(SignOutRequired());
             },
           ),
         ],
