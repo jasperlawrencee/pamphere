@@ -52,201 +52,203 @@ class _SignupState extends State<Signup> {
         }
       },
       child: Scaffold(
-        body: Form(
-          key: formKey,
-          child: Container(
-            padding: EdgeInsets.all(defaultPadding * 2),
-            height: MediaQuery.of(context).size.height,
-            width: double.infinity,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 100),
-                Text(
-                  'Create an account',
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: defaultPadding * 3),
-                Text(
-                  'Full Name',
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: defaultPadding / 2),
-                MyTextFormField(
-                  controller: nameController,
-                  hintText: "Jose Rizal",
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your name";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: defaultPadding),
-                Text(
-                  'Email Address',
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: defaultPadding / 2),
-                MyTextFormField(
-                    controller: emailController,
-                    hintText: "hello@email.com",
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your email";
-                      } else if (!emailRegEx.hasMatch(value)) {
-                        return "Please enter a valid email";
-                      }
-                      return null;
-                    }),
-                SizedBox(height: defaultPadding),
-                Text(
-                  'Password',
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: defaultPadding / 2),
-                MyTextFormField(
-                    controller: passwordController,
-                    hintText: "Your Password",
-                    obscureText: obscureText,
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                        icon: Icon(obscureText
-                            ? CupertinoIcons.eye_fill
-                            : CupertinoIcons.eye_slash_fill)),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter a password";
-                      }
-                      if (!value.contains(RegExp(r'[A-Za-z]'))) {
-                        return 'Include at least 1 letter';
-                      }
-                      if (!value.contains(RegExp(r'[0-9]'))) {
-                        return 'Include at least 1 number';
-                      }
-                      if (value.length < 8) {
-                        return 'Password must have at least 8 characters';
-                      }
-                      return null;
-                    }),
-                Spacer(),
-                PrimaryButton(
-                  ontap: !signUpRequired
-                      ? () {
-                          if (formKey.currentState!.validate()) {
-                            // Declare MyUser variable
-                            MyUser myUser = MyUser.emptyUser;
-
-                            // Gives variable values to give to firestore
-                            myUser = myUser.copyWith(
-                              email: emailController.text,
-                              name: nameController.text,
-                              password: passwordController.text,
-                            );
-
-                            // Logs user in
-                            setState(() {
-                              context.read<SignUpBloc>().add(SignUpRequired(
-                                  myUser, passwordController.text));
-                            });
-
-                            nameController.clear();
-                            emailController.clear();
-                            passwordController.clear();
-                          }
-                        }
-                      : () {
-                          null;
-                        },
-                  child: !signUpRequired
-                      ? Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        )
-                      : CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                ),
-                SizedBox(height: defaultPadding),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        child: Divider(
-                      color: Colors.grey,
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPadding),
-                      child: Text(
-                        'or',
-                        style: TextStyle(color: Colors.grey),
-                      ),
+        body: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Container(
+              padding: EdgeInsets.all(defaultPadding * 2),
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 100),
+                  Text(
+                    'Create an account',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Expanded(
-                        child: Divider(
-                      color: Colors.grey,
-                    )),
-                  ],
-                ),
-                SizedBox(height: defaultPadding),
-                SecondaryButton(
-                    ontap: () {
-                      //google signup here
+                  ),
+                  SizedBox(height: defaultPadding * 3),
+                  Text(
+                    'Full Name',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: defaultPadding / 2),
+                  MyTextFormField(
+                    controller: nameController,
+                    hintText: "Jose Rizal",
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your name";
+                      }
+                      return null;
                     },
+                  ),
+                  SizedBox(height: defaultPadding),
+                  Text(
+                    'Email Address',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: defaultPadding / 2),
+                  MyTextFormField(
+                      controller: emailController,
+                      hintText: "hello@email.com",
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your email";
+                        } else if (!emailRegEx.hasMatch(value)) {
+                          return "Please enter a valid email";
+                        }
+                        return null;
+                      }),
+                  SizedBox(height: defaultPadding),
+                  Text(
+                    'Password',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: defaultPadding / 2),
+                  MyTextFormField(
+                      controller: passwordController,
+                      hintText: "Your Password",
+                      obscureText: obscureText,
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              obscureText = !obscureText;
+                            });
+                          },
+                          icon: Icon(obscureText
+                              ? CupertinoIcons.eye_fill
+                              : CupertinoIcons.eye_slash_fill)),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter a password";
+                        }
+                        if (!value.contains(RegExp(r'[A-Za-z]'))) {
+                          return 'Include at least 1 letter';
+                        }
+                        if (!value.contains(RegExp(r'[0-9]'))) {
+                          return 'Include at least 1 number';
+                        }
+                        if (value.length < 8) {
+                          return 'Password must have at least 8 characters';
+                        }
+                        return null;
+                      }),
+                  Spacer(),
+                  PrimaryButton(
+                    ontap: !signUpRequired
+                        ? () {
+                            if (formKey.currentState!.validate()) {
+                              // Declare MyUser variable
+                              MyUser myUser = MyUser.emptyUser;
+
+                              // Gives variable values to give to firestore
+                              myUser = myUser.copyWith(
+                                email: emailController.text,
+                                name: nameController.text,
+                                password: passwordController.text,
+                              );
+
+                              // Logs user in
+                              setState(() {
+                                context.read<SignUpBloc>().add(SignUpRequired(
+                                    myUser, passwordController.text));
+                              });
+
+                              nameController.clear();
+                              emailController.clear();
+                              passwordController.clear();
+                            }
+                          }
+                        : () {
+                            null;
+                          },
+                    child: !signUpRequired
+                        ? Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          )
+                        : CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                  ),
+                  SizedBox(height: defaultPadding),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                          child: Divider(
+                        color: Colors.grey,
+                      )),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: defaultPadding),
+                        child: Text(
+                          'or',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      Expanded(
+                          child: Divider(
+                        color: Colors.grey,
+                      )),
+                    ],
+                  ),
+                  SizedBox(height: defaultPadding),
+                  SecondaryButton(
+                      ontap: () {
+                        //google signup here
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(FontAwesomeIcons.google),
+                          SizedBox(width: defaultPadding),
+                          Text("Continue with Google"),
+                        ],
+                      )),
+                  SizedBox(height: defaultPadding * 2),
+                  Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(FontAwesomeIcons.google),
-                        SizedBox(width: defaultPadding),
-                        Text("Continue with Google"),
-                      ],
-                    )),
-                SizedBox(height: defaultPadding * 2),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Already have an account? "),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              create: (context) => SignInBloc(
-                                  userRepository: context
-                                      .read<AuthenticationBloc>()
-                                      .userRepository),
-                              child: LoginPage(),
+                        Text("Already have an account? "),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => BlocProvider(
+                                create: (context) => SignInBloc(
+                                    userRepository: context
+                                        .read<AuthenticationBloc>()
+                                        .userRepository),
+                                child: LoginPage(),
+                              ),
+                            ));
+                          },
+                          child: Text(
+                            'Sign in here',
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ));
-                        },
-                        child: Text(
-                          'Sign in here',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

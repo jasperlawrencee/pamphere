@@ -80,10 +80,13 @@ class _OnboardingState extends State<Onboarding> {
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.setBool('hasSeenOnboarding', true);
                             log("User has seen onboarding");
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (context) => HomePage(),
-                            ));
+                            if (mounted) {
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ));
+                            }
                           },
                           child: Center(
                               child: Text(

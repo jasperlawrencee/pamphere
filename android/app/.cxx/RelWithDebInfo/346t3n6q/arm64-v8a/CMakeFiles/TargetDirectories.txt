@@ -1,0 +1,2 @@
+/Users/jasperlawrencee/Development/projects/pamphere/android/app/.cxx/RelWithDebInfo/346t3n6q/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/jasperlawrencee/Development/projects/pamphere/android/app/.cxx/RelWithDebInfo/346t3n6q/arm64-v8a/CMakeFiles/rebuild_cache.dir

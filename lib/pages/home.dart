@@ -4,10 +4,9 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 import 'package:pamphere/blocs/my_user_bloc/my_user_bloc.dart';
-import 'package:pamphere/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:pamphere/components/constants.dart';
-import 'package:pamphere/components/widgets.dart';
 import 'package:pamphere/pages/profile.dart';
+import 'package:pamphere/utils.dart';
 import 'package:user_repository/user_repository.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
       controller: controller,
       backdropColor: primaryColor,
       animationCurve: Curves.easeInExpo,
-      disabledGestures: true,
+      disabledGestures: false,
       rtlOpening: false,
       drawer: SafeArea(
         child: Padding(
@@ -43,10 +42,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Spacer(),
               GestureDetector(
-                onTap: () {
-                  context.read<SignInBloc>().add(const SignOutRequired());
-                  ToastNotifications().infoToast(message: "User Logged Out");
-                },
+                onTap: () => showLogoutDialog(context),
                 child: Row(
                   children: [
                     Icon(CupertinoIcons.square_arrow_right,
@@ -73,6 +69,7 @@ class _HomePageState extends State<HomePage> {
           title: BlocBuilder<MyUserBloc, MyUserState>(
             builder: (context, state) {
               if (state.status == MyUserStatus.success) {
+                // Display user's first name in the app bar using [state.user!.name]
                 final firstName = state.user!.name.split(' ')[0];
                 return Row(
                   mainAxisSize: MainAxisSize.max,
@@ -149,13 +146,30 @@ class _HomePageState extends State<HomePage> {
                 );
               } else {
                 // insert skeleton loading ui
-                return Container(
-                  height: 10,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: TWColors.neutral,
-                      borderRadius: BorderRadius.all(Radius.circular(4))),
-                );
+                return Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 20,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: TWColors.neutral,
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                      ),
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: TWColors.indigo.shade300,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.person_outline,
+                          color: TWColors.indigo,
+                        ),
+                      )
+                    ]);
               }
             },
           ),
@@ -163,6 +177,7 @@ class _HomePageState extends State<HomePage> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+            // TODO: Add BLoC for getting all salon and freelancers
             child: ListView(
               shrinkWrap: true,
               children: [
@@ -172,6 +187,8 @@ class _HomePageState extends State<HomePage> {
                     color: TWColors.gray.shade200,
                     borderRadius: BorderRadius.circular(15),
                   ),
+                  // TODO: Make working search bar after integrating backend
+                  // TODO: Add search bar to search for services, stylists, or salons
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Find services, stylists, or salons',
