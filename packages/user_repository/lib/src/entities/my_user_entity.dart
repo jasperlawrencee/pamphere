@@ -5,6 +5,9 @@ class MyUserEntity extends Equatable {
   final String email;
   final String name;
   final String password;
+  final int history;
+  final int favorites;
+  final int reviews;
   final String? picture;
 
   const MyUserEntity({
@@ -12,6 +15,9 @@ class MyUserEntity extends Equatable {
     required this.email,
     required this.name,
     required this.password,
+    required this.history,
+    required this.favorites,
+    required this.reviews,
     required this.picture,
   });
 
@@ -21,6 +27,9 @@ class MyUserEntity extends Equatable {
       'email': email,
       'name': name,
       'password': password,
+      'history': history,
+      'favorites': favorites,
+      'reviews': reviews,
       'picture': picture,
     };
   }
@@ -31,12 +40,24 @@ class MyUserEntity extends Equatable {
       email: doc['email'] as String,
       name: doc['name'] as String,
       password: doc['password'] as String,
+      history: doc['history'] as int,
+      favorites: doc['favorites'] as int,
+      reviews: doc['reviews'] as int,
       picture: doc['picture'] as String,
     );
   }
 
   @override
-  List<Object?> get props => [id, email, name, picture];
+  List<Object?> get props => [
+        id,
+        email,
+        name,
+        picture,
+        password,
+        history,
+        favorites,
+        reviews,
+      ];
 
   @override
   String toString() {
@@ -44,6 +65,10 @@ class MyUserEntity extends Equatable {
       id: $id
       email: $email
       name: $name
+      password: $password
+      history: $history
+      favorites: $favorites
+      reviews: $reviews
       picture: $picture
     }''';
   }

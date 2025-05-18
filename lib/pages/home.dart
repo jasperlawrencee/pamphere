@@ -7,7 +7,6 @@ import 'package:pamphere/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/pages/profile.dart';
 import 'package:pamphere/utils.dart';
-import 'package:user_repository/user_repository.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -42,7 +41,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Spacer(),
               GestureDetector(
-                onTap: () => showLogoutDialog(context),
+                onTap: () => Utils.showLogoutDialog(context),
                 child: Row(
                   children: [
                     Icon(CupertinoIcons.square_arrow_right,
@@ -105,17 +104,17 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.push(
+                      onTap: () {
+                        // navigate to profile page
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              create: (context) => MyUserBloc(
-                                  myUserRepository:
-                                      context.read<UserRepository>()),
-                              // Pass User Details Here
-                              child: ProfilePage(),
+                            builder: (context) => ProfilePage(
+                              user: state.user!,
                             ),
-                          )),
+                          ),
+                        );
+                      },
                       child: state.user!.picture == ""
                           ? Container(
                               width: 50,
@@ -147,29 +146,54 @@ class _HomePageState extends State<HomePage> {
               } else {
                 // insert skeleton loading ui
                 return Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 20,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: TWColors.neutral,
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                          onTap: handleDrawer,
+                          child: Icon(Icons.menu),
+                        ),
+                        SizedBox(
+                          width: defaultPadding,
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Name Skeleton
+                            Container(
+                              width: 200,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: TWColors.gray.shade200,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            Text(
+                              'Get pampered today!',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: TWColors.indigo.shade300,
+                        shape: BoxShape.circle,
                       ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: TWColors.indigo.shade300,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.person_outline,
-                          color: TWColors.indigo,
-                        ),
-                      )
-                    ]);
+                      child: Icon(
+                        Icons.person_outline,
+                        color: TWColors.indigo,
+                      ),
+                    )
+                  ],
+                );
               }
             },
           ),

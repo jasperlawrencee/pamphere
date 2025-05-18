@@ -7,6 +7,7 @@ import 'package:pamphere/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:pamphere/blocs/sign_up_bloc/sign_up_bloc.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
+import 'package:pamphere/pages/home.dart';
 import 'package:pamphere/pages/login.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -41,7 +42,13 @@ class _SignupState extends State<Signup> {
             signUpRequired = false;
           });
           ToastNotifications().sucessToast(message: "Created Account");
-          // navigate to welcome screen
+          //TODO: Navigate to homepage
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+            (route) => false,
+          );
         } else if (state is SignupProcess) {
           setState(() {
             signUpRequired = true;
@@ -141,46 +148,49 @@ class _SignupState extends State<Signup> {
                       }),
                   Spacer(),
                   PrimaryButton(
-                    ontap: !signUpRequired
-                        ? () {
-                            if (formKey.currentState!.validate()) {
-                              // Declare MyUser variable
-                              MyUser myUser = MyUser.emptyUser;
+                      ontap: !signUpRequired
+                          ? () {
+                              if (formKey.currentState!.validate()) {
+                                // Declare MyUser variable
+                                MyUser myUser = MyUser.emptyUser;
 
-                              // Gives variable values to give to firestore
-                              myUser = myUser.copyWith(
-                                email: emailController.text,
-                                name: nameController.text,
-                                password: passwordController.text,
-                              );
+                                // Gives variable values to give to firestore
+                                myUser = myUser.copyWith(
+                                  email: emailController.text,
+                                  name: nameController.text,
+                                  password: passwordController.text,
+                                );
 
-                              // Logs user in
-                              setState(() {
-                                context.read<SignUpBloc>().add(SignUpRequired(
-                                    myUser, passwordController.text));
-                              });
+                                // Logs user in
+                                setState(() {
+                                  context.read<SignUpBloc>().add(SignUpRequired(
+                                      myUser, passwordController.text));
+                                });
 
-                              nameController.clear();
-                              emailController.clear();
-                              passwordController.clear();
+                                nameController.clear();
+                                emailController.clear();
+                                passwordController.clear();
+                              }
                             }
-                          }
-                        : () {
-                            null;
-                          },
-                    child: !signUpRequired
-                        ? Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),
-                          )
-                        : CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                  ),
+                          : () {
+                              null;
+                            },
+                      child: !signUpRequired
+                          ? Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            )
+                          : SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )),
                   SizedBox(height: defaultPadding),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

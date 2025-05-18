@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
-import 'package:pamphere/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
 import 'package:pamphere/utils.dart';
+import 'package:user_repository/user_repository.dart';
 
 class ProfilePage extends StatefulWidget {
+  final MyUser user;
+
   const ProfilePage({
     super.key,
+    required this.user,
   });
 
   @override
@@ -26,17 +28,23 @@ class _ProfilePageState extends State<ProfilePage> {
   //TODO: Create Profile Page for user to update their saved services
   //TODO: Create Profile Page for user to update their dark mode preference
   //TODO: Create Profile Page for user to update their push notification preference
+  //TODO: add appointments, reviews, hisotry to userclass
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MyUserBloc, MyUserState>(
-        builder: (context, state) {
-          return CustomScrollView(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+        ),
+        body: SafeArea(
+          child: CustomScrollView(
             slivers: [
               SliverAppBar(
+                // Added container widget for avoiding duplicate leading [back] button
+                leading: Container(),
                 backgroundColor: primaryColor,
                 foregroundColor: Colors.white,
-                expandedHeight: MediaQuery.of(context).size.height * 0.3,
+                expandedHeight: MediaQuery.of(context).size.height * 0.32,
                 floating: false,
                 pinned: true,
                 flexibleSpace: LayoutBuilder(
@@ -49,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     return FlexibleSpaceBar(
                       title: percentage < 0.5
                           ? Text(
-                              "Jose Rizal",
+                              widget.user.name,
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
@@ -63,7 +71,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: defaultPadding * 4),
                           Stack(
                             alignment: Alignment.center,
                             children: [
@@ -104,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           SizedBox(height: defaultPadding),
                           Text(
-                            'Jose Rizal',
+                            widget.user.name,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
@@ -112,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Text(
-                            'sampleEmail@likethis.com',
+                            widget.user.email,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
@@ -284,9 +291,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Text("Pamphere Version $appVersion")),
                           ),
                           TertiaryButton(
-                            ontap: () {
-                              showLogoutDialog(context);
-                            },
+                            ontap: () => Utils.showLogoutDialog(context),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -310,9 +315,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ],
-          );
-        },
-      ),
-    );
+          ),
+        ));
   }
 }

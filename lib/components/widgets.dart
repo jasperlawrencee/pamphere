@@ -18,6 +18,7 @@ class PrimaryButton extends StatelessWidget {
     return GestureDetector(
         onTap: ontap,
         child: Container(
+            height: 60,
             padding: EdgeInsets.symmetric(vertical: defaultPadding),
             decoration: BoxDecoration(
                 color: TWColors.indigo.shade400,
@@ -42,6 +43,7 @@ class SecondaryButton extends StatelessWidget {
     return GestureDetector(
         onTap: ontap,
         child: Container(
+            height: 60,
             padding: EdgeInsets.symmetric(
                 vertical: defaultPadding, horizontal: defaultPadding / 2),
             decoration: BoxDecoration(
