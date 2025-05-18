@@ -59,6 +59,10 @@ dependencies:
   # Custom Repository Here
   user_repository:
     path: packages/user_repository
+
+  salon_repository:
+    path: packages/salon_repository
+    
   google_sign_in: ^6.3.0
 
 dev_dependencies:

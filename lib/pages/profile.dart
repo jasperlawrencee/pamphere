@@ -28,7 +28,6 @@ class _ProfilePageState extends State<ProfilePage> {
   //TODO: Create Profile Page for user to update their saved services
   //TODO: Create Profile Page for user to update their dark mode preference
   //TODO: Create Profile Page for user to update their push notification preference
-  //TODO: add appointments, reviews, hisotry to userclass
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '24',
+                                    widget.user.history.toString(),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -155,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '12',
+                                    widget.user.reviews.toString(),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -175,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '5',
+                                    widget.user.favorites.toString(),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
