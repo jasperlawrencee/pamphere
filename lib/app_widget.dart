@@ -11,11 +11,17 @@ import 'package:pamphere/pages/home.dart';
 import 'package:pamphere/pages/login.dart';
 
 class MyAppWidget extends StatelessWidget {
+  final ThemeData lightMode;
+  final ThemeData darkMode;
+  final ThemeMode themeMode;
   final bool hasSeenOnboarding;
 
   const MyAppWidget({
     super.key,
     required this.hasSeenOnboarding,
+    required this.lightMode,
+    required this.darkMode,
+    required this.themeMode,
   });
 
   @override
@@ -23,11 +29,14 @@ class MyAppWidget extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: lightMode,
+      darkTheme: darkMode,
+      themeMode: themeMode,
+      // theme: ThemeData(
+      //   fontFamily: 'Poppins',
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      //   useMaterial3: true,
+      // ),
       home: hasSeenOnboarding
           ? BlocBuilder<AuthenticationBloc, AuthenticationState>(
               builder: (context, state) {

@@ -171,36 +171,42 @@ class ButtonSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(height: defaultPadding),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    icon,
-                    color: TWColors.indigo,
-                  ),
-                  SizedBox(width: defaultPadding),
-                  Text(
-                    label,
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ],
-              ),
-              endIcon,
-            ],
-          ),
-          SizedBox(height: defaultPadding / 2),
-          Divider(color: TWColors.gray.shade300),
-        ],
+    return SizedBox(
+      height: 70,
+      child: GestureDetector(
+        onTap: () {},
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: defaultPadding),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      icon,
+                      color: TWColors.indigo,
+                    ),
+                    SizedBox(width: defaultPadding),
+                    Text(
+                      label,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 28,
+                  child: endIcon,
+                ),
+              ],
+            ),
+            SizedBox(height: defaultPadding / 2),
+            Divider(color: TWColors.gray.shade300),
+          ],
+        ),
       ),
     );
   }

@@ -19,7 +19,7 @@ class SalonCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: defaultPadding / 2),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -75,7 +75,6 @@ class SalonCard extends StatelessWidget {
                       child: const Text(
                         'Freelancer',
                         style: TextStyle(
-                          color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
@@ -107,14 +106,15 @@ class SalonCard extends StatelessWidget {
                   Row(
                     children: [
                       Icon(Icons.location_on,
-                          size: 16, color: Colors.grey[600]),
+                          size: 16,
+                          color: Theme.of(context).colorScheme.tertiary),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           salon.address,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -174,14 +174,18 @@ class SalonCard extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: primaryLightColor,
+                          color: Theme.of(context).colorScheme.primary,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           service,
                           style: TextStyle(
                             fontSize: 12,
-                            color: primaryColor,
+                            fontWeight: FontWeight.w500,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.white
+                                    : null,
                           ),
                         ),
                       );

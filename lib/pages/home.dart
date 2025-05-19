@@ -66,6 +66,8 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          scrolledUnderElevation: 0,
           title: BlocBuilder<MyUserBloc, MyUserState>(
             builder: (context, state) {
               if (state.status == MyUserStatus.success) {
@@ -118,8 +120,8 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: state.user!.picture == ""
                           ? Container(
-                              width: 50,
-                              height: 50,
+                              width: 46,
+                              height: 46,
                               decoration: BoxDecoration(
                                 color: TWColors.indigo.shade300,
                                 shape: BoxShape.circle,
@@ -130,8 +132,8 @@ class _HomePageState extends State<HomePage> {
                               ),
                             )
                           : Container(
-                              width: 50,
-                              height: 50,
+                              width: 46,
+                              height: 46,
                               decoration: BoxDecoration(
                                   color: TWColors.indigo.shade300,
                                   shape: BoxShape.circle,
@@ -200,7 +202,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: SafeArea(
-          child: Padding(
+          child: Container(
+            color: Theme.of(context).colorScheme.background,
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -208,7 +211,10 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                    color: TWColors.gray.shade200,
+                    border: Border.all(
+                      color: TWColors.gray.shade300,
+                      width: 2,
+                    ),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   // TODO: Make working search bar after integrating backend

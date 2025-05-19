@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pamphere/app.dart';
 import 'package:pamphere/simple_bloc_observer.dart';
+import 'package:pamphere/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 import 'package:user_repository/user_repository.dart';
@@ -20,10 +22,13 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
-  runApp(ToastificationWrapper(
-    child: MyApp(
-      FirebaseUserRepository(),
-      hasSeenOnboarding: hasSeenOnboarding,
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
+    child: ToastificationWrapper(
+      child: MyApp(
+        FirebaseUserRepository(),
+        hasSeenOnboarding: hasSeenOnboarding,
+      ),
     ),
   ));
 }

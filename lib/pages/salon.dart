@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:salon_repository/salon_repository.dart';
 
@@ -35,6 +33,9 @@ class _SalonDetailPageState extends State<SalonDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    Color? customColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.grey.shade200
+        : null;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -183,14 +184,17 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                   // Address
                   Row(
                     children: [
-                      Icon(Icons.location_on, color: Colors.grey[600]),
+                      Icon(Icons.location_on, color: customColor),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           widget.salon.address,
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.grey[800],
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.grey.shade200
+                                    : null,
                           ),
                         ),
                       ),
@@ -201,13 +205,13 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                   // Opening Hours
                   Row(
                     children: [
-                      Icon(Icons.access_time, color: Colors.grey[600]),
+                      Icon(Icons.access_time, color: customColor),
                       const SizedBox(width: 8),
                       Text(
                         'Open today: 9:00 AM - 7:00 PM',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.grey[800],
+                          color: customColor,
                         ),
                       ),
                     ],
@@ -217,13 +221,13 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                   // Contact
                   Row(
                     children: [
-                      Icon(Icons.phone, color: Colors.grey[600]),
+                      Icon(Icons.phone, color: customColor),
                       const SizedBox(width: 8),
                       Text(
                         widget.salon.phone ?? 'No phone number available',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.grey[800],
+                          color: customColor,
                         ),
                       ),
                     ],
@@ -240,10 +244,12 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    widget.salon.description ?? 'No description available',
+                    widget.salon.description.isEmpty
+                        ? widget.salon.description
+                        : 'No description available',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey[800],
+                      color: customColor,
                       height: 1.5,
                     ),
                   ),

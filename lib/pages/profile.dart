@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
+import 'package:pamphere/themes/theme_provider.dart';
 import 'package:pamphere/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:user_repository/user_repository.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -19,16 +21,17 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  bool darkMode = true;
   ////TODO: Create Profile Page for user to update their details
   /// update [payments] [addresses] [reviews] [favorites] [history]
   //TODO: Create Profile Page for user to update their dark mode preference
   //TODO: Create Profile Page for user to update their push notification preference
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.background,
         ),
         body: SafeArea(
           child: CustomScrollView(
@@ -36,8 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SliverAppBar(
                 // Added container widget for avoiding duplicate leading [back] button
                 leading: Container(),
-                backgroundColor: primaryColor,
-                foregroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 expandedHeight: MediaQuery.of(context).size.height * 0.32,
                 floating: false,
                 pinned: true,
@@ -55,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.white,
                               ),
                             )
                           : null,
@@ -72,10 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 80,
                                 height: 80,
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 3,
-                                  ),
                                   color: TWColors.indigo.shade300,
                                   shape: BoxShape.circle,
                                 ),
@@ -109,7 +106,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white,
                             ),
                           ),
                           Text(
@@ -117,7 +113,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
-                              color: Colors.white,
                             ),
                           ),
                           SizedBox(height: defaultPadding * 2),
@@ -133,14 +128,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
                                     ),
                                   ),
                                   Text(
                                     'Appointments',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
                                   ),
                                 ],
                               ),
@@ -153,14 +144,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
                                     ),
                                   ),
                                   Text(
                                     'Reviews',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
+                                    style: TextStyle(),
                                   ),
                                 ],
                               ),
@@ -173,14 +161,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
                                     ),
                                   ),
                                   Text(
                                     'Favorites',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
+                                    style: TextStyle(),
                                   ),
                                 ],
                               ),
@@ -259,23 +244,22 @@ class _ProfilePageState extends State<ProfilePage> {
                           ButtonSetting(
                             icon: CupertinoIcons.moon,
                             label: "Dark Mode",
-                            endIcon: SizedBox(
-                              height: 1,
-                              child: Switch(
-                                value: false,
-                                onChanged: (value) {},
-                              ),
+                            endIcon: Switch(
+                              activeColor: primaryColor,
+                              value: themeProvider.isDarkMode,
+                              onChanged: (value) {
+                                themeProvider
+                                    .setThemeMode(value ? 'dark' : 'light');
+                              },
                             ),
                           ),
                           ButtonSetting(
                             icon: CupertinoIcons.bell,
                             label: "Push Notifications",
-                            endIcon: SizedBox(
-                              height: 1,
-                              child: Switch(
-                                value: false,
-                                onChanged: (value) {},
-                              ),
+                            endIcon: Switch(
+                              activeColor: primaryColor,
+                              value: false,
+                              onChanged: (value) {},
                             ),
                           ),
                           SizedBox(height: defaultPadding * 2),
