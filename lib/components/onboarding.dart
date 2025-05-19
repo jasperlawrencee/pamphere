@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:pamphere/components/widgets.dart';
-import 'package:pamphere/pages/home.dart';
+import 'package:pamphere/pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -84,7 +84,7 @@ class _OnboardingState extends State<Onboarding> {
                               // ignore: use_build_context_synchronously
                               Navigator.of(context)
                                   .pushReplacement(MaterialPageRoute(
-                                builder: (context) => HomePage(),
+                                builder: (context) => LoginPage(),
                               ));
                             }
                           },

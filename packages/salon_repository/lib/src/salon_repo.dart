@@ -1,7 +1,13 @@
 import 'package:salon_repository/salon_repository.dart';
 
 abstract class SalonRepository {
-  Future<List<Salon>> getSalons();
+  Future<List<Salon>> getSalons({
+    int? limit,
+    String? lastSalonId,
+    bool? isFreelancer,
+    List<String>? services,
+    double? minRating,
+  });
 
   Future<List<Salon>> getFreelancers();
 

@@ -42,7 +42,6 @@ class _SignupState extends State<Signup> {
             signUpRequired = false;
           });
           ToastNotifications().sucessToast(message: "Created Account");
-          //TODO: Navigate to homepage
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => HomePage(),
@@ -184,9 +183,8 @@ class _SignupState extends State<Signup> {
                                 fontSize: 16,
                               ),
                             )
-                          : SizedBox(
-                              height: 24,
-                              width: 24,
+                          : SizedBox.square(
+                              dimension: 20,
                               child: CircularProgressIndicator(
                                 color: Colors.white,
                               ),

@@ -11,14 +11,62 @@ class FirebaseSalonRepository implements SalonRepository {
   final salonCollection = FirebaseFirestore.instance.collection('salons');
 
   @override
-  Future<List<Salon>> getSalons() async {
+  Future<List<Salon>> getSalons({
+    int? limit,
+    String? lastSalonId,
+    bool? isFreelancer,
+    List<String>? services,
+    double? minRating,
+  }) async {
     try {
-      final querySnapshot =
-          await salonCollection.where('isFreelancer', isEqualTo: false).get();
+      Query query = salonCollection;
 
-      return querySnapshot.docs
-          .map((doc) => Salon.fromEntity(SalonEntity.fromDocument(doc.data())))
+      // apply [isFreelancer] filter if provided, otherwise default to [false] or (salons)
+      if (isFreelancer != null) {
+        query = query.where('isFreelancer', isEqualTo: isFreelancer);
+      } else {
+        query = query.where('isFreelancer', isEqualTo: false);
+      }
+
+      // apply pagination if lastSalonId is provided
+      if (lastSalonId != null) {
+        final lastDocumentSnapshot =
+            await salonCollection.doc(lastSalonId).get();
+        if (lastDocumentSnapshot.exists) {
+          query = query.startAfterDocument(lastDocumentSnapshot);
+        }
+      }
+
+      // apply [limit] filter if provided
+      if (limit != null) {
+        query = query.limit(limit);
+      }
+
+      final querySnapshot = await query.get();
+
+      List<Salon> salons = querySnapshot.docs
+          .map(
+            (doc) => Salon.fromEntity(
+                SalonEntity.fromDocument(doc.data() as Map<String, dynamic>)),
+          )
           .toList();
+
+      // client-side filtering for [services] and [minRating]
+      if (services != null && services.isNotEmpty) {
+        salons = salons.where((salon) {
+          return salon.services.any((service) => services.contains(service));
+        }).toList();
+      }
+
+      if (minRating != null) {
+        salons = salons
+            .where(
+              (element) => element.rating >= minRating,
+            )
+            .toList();
+      }
+
+      return salons;
     } catch (e) {
       log(e.toString());
       rethrow;

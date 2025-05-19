@@ -151,7 +151,11 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 16,
                             ),
                           )
-                        : CircularProgressIndicator(color: Colors.white),
+                        : SizedBox.square(
+                            dimension: 20,
+                            child:
+                                CircularProgressIndicator(color: Colors.white),
+                          ),
                   ),
                   SizedBox(height: defaultPadding),
                   Row(

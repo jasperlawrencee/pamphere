@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pamphere/app_widget.dart';
 import 'package:pamphere/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:pamphere/blocs/list_salons/list_salons_bloc.dart';
 import 'package:pamphere/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:pamphere/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:pamphere/blocs/sign_up_bloc/sign_up_bloc.dart';
+import 'package:salon_repository/salon_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 class MyApp extends StatelessWidget {
@@ -20,6 +22,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        RepositoryProvider<SalonRepository>(
+          create: (_) => FirebaseSalonRepository(),
+        ),
         RepositoryProvider<AuthenticationBloc>(
           create: (_) => AuthenticationBloc(myUserRepository: userRepository),
         ),
@@ -34,6 +39,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<SignUpBloc>(
           create: (context) => SignUpBloc(userRepository: userRepository),
+        ),
+        BlocProvider<ListSalonsBloc>(
+          create: (context) =>
+              ListSalonsBloc(salonRepository: context.read<SalonRepository>())
+                ..add(LoadSalons()),
         ),
       ],
       child: MyAppWidget(hasSeenOnboarding: hasSeenOnboarding),

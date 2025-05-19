@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 import 'package:pamphere/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:pamphere/components/constants.dart';
+import 'package:pamphere/components/salon_list.dart';
 import 'package:pamphere/pages/profile.dart';
 import 'package:pamphere/utils.dart';
 
@@ -201,9 +202,8 @@ class _HomePageState extends State<HomePage> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-            // TODO: Add BLoC for getting all salon and freelancers
-            child: ListView(
-              shrinkWrap: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),
@@ -226,6 +226,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
+                Expanded(child: SalonList()),
               ],
             ),
           ),

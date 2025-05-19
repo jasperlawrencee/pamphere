@@ -19,13 +19,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  //TODO: Create Profile BLoC for fetching user details
-  //TODO: Create Profile Page for user to update their details
-  //TODO: Create Profile Page for user to update their payment details
-  //TODO: Create Profile Page for user to update their address details
-  //TODO: Create Profile Page for user to update their appointment history
-  //TODO: Create Profile Page for user to update their liked stylists
-  //TODO: Create Profile Page for user to update their saved services
+  ////TODO: Create Profile Page for user to update their details
+  /// update [payments] [addresses] [reviews] [favorites] [history]
   //TODO: Create Profile Page for user to update their dark mode preference
   //TODO: Create Profile Page for user to update their push notification preference
   @override
