@@ -21,11 +21,9 @@ class FirebaseSalonRepository implements SalonRepository {
     try {
       Query query = salonCollection;
 
-      // apply [isFreelancer] filter if provided, otherwise default to [false] or (salons)
+      // apply [isFreelancer] filter if provided, otherwise default to [false] unless provided
       if (isFreelancer != null) {
         query = query.where('isFreelancer', isEqualTo: isFreelancer);
-      } else {
-        query = query.where('isFreelancer', isEqualTo: false);
       }
 
       // apply pagination if lastSalonId is provided

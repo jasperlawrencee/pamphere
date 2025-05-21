@@ -9,11 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pamphere/app_widget.dart';
+import 'package:pamphere/themes/themes.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyAppWidget(
+      darkMode: darkMode,
+      lightMode: lightMode,
+      themeMode: ThemeMode.system,
       hasSeenOnboarding: true,
     ));
 

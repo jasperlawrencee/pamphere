@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 import 'package:pamphere/components/constants.dart';
 import 'package:salon_repository/salon_repository.dart';
 
@@ -103,15 +104,18 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: primaryColor,
+                                  color: TWColors.rose.shade400,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'Freelancer',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.grey.shade200
+                                        : null,
                                     fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),

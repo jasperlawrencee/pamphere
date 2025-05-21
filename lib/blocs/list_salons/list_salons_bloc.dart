@@ -6,6 +6,7 @@ part 'list_salons_event.dart';
 part 'list_salons_state.dart';
 
 class ListSalonsBloc extends Bloc<ListSalonsEvent, ListSalonsState> {
+  //TDOO: fix list salon
   final SalonRepository _salonRepository;
   final int _renderSalonLimit = 10;
 

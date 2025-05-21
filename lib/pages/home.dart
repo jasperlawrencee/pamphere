@@ -20,6 +20,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final AdvancedDrawerController controller = AdvancedDrawerController();
+  String defaultFilter = 'All';
+  String searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -202,12 +204,15 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: SafeArea(
+          bottom: false,
           child: Container(
+            width: MediaQuery.of(context).size.width,
             color: Theme.of(context).colorScheme.background,
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Search bar
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
@@ -217,8 +222,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  // TODO: Make working search bar after integrating backend
-                  // TODO: Add search bar to search for services, stylists, or salons
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Find services, stylists, or salons',
@@ -228,11 +231,88 @@ class _HomePageState extends State<HomePage> {
                       contentPadding: const EdgeInsets.all(15),
                     ),
                     onChanged: (value) {
-                      // Handle search input here
+                      setState(() {
+                        searchQuery = value.trim();
+                      });
                     },
                   ),
                 ),
-                Expanded(child: SalonList()),
+                // Filter bar
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: defaultPadding),
+                        margin: EdgeInsets.only(bottom: defaultPadding),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: TWColors.gray.shade300,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: defaultFilter,
+                            icon: Icon(Icons.keyboard_arrow_down),
+                            iconSize: 24,
+                            items: [
+                              DropdownMenuItem(
+                                value: 'All',
+                                child: Text('All'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Salons',
+                                child: Text('Salons'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Freelancers',
+                                child: Text('Freelancers'),
+                              )
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                defaultFilter = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: defaultPadding),
+                    // sort by button
+                    Container(
+                      height: 52,
+                      padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                      margin: EdgeInsets.only(bottom: defaultPadding),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: TWColors.gray.shade300,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: showFilterBottomSheet,
+                              child: Icon(CupertinoIcons.slider_horizontal_3),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // List of salons
+                Expanded(
+                    child: SalonList(
+                  filter: defaultFilter,
+                  searchQuery: searchQuery,
+                )),
               ],
             ),
           ),
@@ -243,5 +323,29 @@ class _HomePageState extends State<HomePage> {
 
   void handleDrawer() {
     controller.showDrawer();
+  }
+
+  //TODO: implement filter bottom sheet
+  void showFilterBottomSheet() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(),
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              height: double.infinity,
+              width: double.infinity,
+              padding: EdgeInsets.all(defaultPadding),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Text('Filter by',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
+                //TODO: Implement filtering options
+                Text('Price'),
+                Text('Rating'),
+                Text('Nearest Me'),
+              ]));
+        });
   }
 }
