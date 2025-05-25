@@ -341,7 +341,6 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
-                //TODO: Implement filtering options
                 Text('Price'),
                 Text('Rating'),
                 Text('Nearest Me'),

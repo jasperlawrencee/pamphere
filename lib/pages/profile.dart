@@ -24,7 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
   bool darkMode = true;
   ////TODO: Create Profile Page for user to update their details
   /// update [payments] [addresses] [reviews] [favorites] [history]
-  //TODO: Create Profile Page for user to update their dark mode preference
   //TODO: Create Profile Page for user to update their push notification preference
   @override
   Widget build(BuildContext context) {

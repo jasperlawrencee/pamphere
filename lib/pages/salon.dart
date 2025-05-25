@@ -19,16 +19,40 @@ class _SalonDetailPageState extends State<SalonDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool isFavorite = false;
+  final ScrollController _scrollController = ScrollController();
+  bool _showAppBar = true;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+
+    // Add scroll listener to handle app bar visibility
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    // Show/hide app bar based on scroll direction
+    if (_scrollController.position.userScrollDirection == AxisDirection.down) {
+      if (_showAppBar) {
+        setState(() {
+          _showAppBar = false;
+        });
+      }
+    } else {
+      if (!_showAppBar) {
+        setState(() {
+          _showAppBar = true;
+        });
+      }
+    }
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -37,150 +61,177 @@ class _SalonDetailPageState extends State<SalonDetailPage>
     Color? customColor = Theme.of(context).brightness == Brightness.dark
         ? Colors.grey.shade200
         : null;
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          // App Bar with Salon Image
-          SliverAppBar(
-            expandedHeight: 250,
-            pinned: true,
-            backgroundColor: primaryColor,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  // Salon Image
-                  Image.network(
-                    widget.salon.picture!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[300],
-                        child: const Icon(
-                          Icons.image_not_supported,
-                          size: 50,
-                          color: Colors.grey,
+      body: NestedScrollView(
+        controller: _scrollController,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            // Collapsible App Bar with Salon Image
+            SliverAppBar(
+              expandedHeight: 250,
+              pinned: true,
+              floating: true,
+              snap: false,
+              backgroundColor: primaryColor,
+              elevation: 0,
+              forceElevated: innerBoxIsScrolled,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Salon Image
+                    Image.network(
+                      widget.salon.picture!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[300],
+                          child: const Icon(
+                            Icons.image_not_supported,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        );
+                      },
+                    ),
+                    // Gradient overlay for better text visibility
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.7),
+                          ],
                         ),
-                      );
-                    },
-                  ),
-                  // Gradient overlay for better text visibility
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.7),
-                        ],
                       ),
                     ),
-                  ),
-                  // Salon name and rating at the bottom
-                  Positioned(
-                    bottom: 16,
-                    left: 16,
-                    right: 16,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                widget.salon.name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            if (widget.salon.isFreelancer)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: TWColors.rose.shade400,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
+                    // Salon name and rating at the bottom
+                    Positioned(
+                      bottom: 16,
+                      left: 16,
+                      right: 16,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
                                 child: Text(
-                                  'Freelancer',
-                                  style: TextStyle(
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? Colors.grey.shade200
-                                        : null,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                                  widget.salon.name,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            // Rating Stars
-                            Row(
-                              children: List.generate(5, (index) {
-                                return Icon(
-                                  index < widget.salon.rating.floor()
-                                      ? Icons.star
-                                      : index < widget.salon.rating
-                                          ? Icons.star_half
-                                          : Icons.star_border,
-                                  color: Colors.amber,
-                                  size: 18,
-                                );
-                              }),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              '${widget.salon.rating} (${widget.salon.reviewCount} reviews)',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
+                              if (widget.salon.isFreelancer)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: TWColors.rose.shade400,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    'Freelancer',
+                                    style: TextStyle(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.grey.shade200
+                                          : null,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              // Rating Stars
+                              Row(
+                                children: List.generate(5, (index) {
+                                  return Icon(
+                                    index < widget.salon.rating.floor()
+                                        ? Icons.star
+                                        : index < widget.salon.rating
+                                            ? Icons.star_half
+                                            : Icons.star_border,
+                                    color: Colors.amber,
+                                    size: 18,
+                                  );
+                                }),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              const SizedBox(width: 8),
+                              Text(
+                                '${widget.salon.rating} (${widget.salon.reviewCount} reviews)',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              // Favorite Button
-              IconButton(
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? Colors.red : Colors.white,
+                  ],
                 ),
-                onPressed: () {
-                  setState(() {
-                    isFavorite = !isFavorite;
-                  });
-                  // TODO: Add to favorites functionality
-                },
               ),
-              // Share Button
-              IconButton(
-                icon: const Icon(Icons.share, color: Colors.white),
-                onPressed: () {
-                  // TODO: Implement share functionality
-                },
-              ),
-            ],
-          ),
+              actions: [
+                // Favorite Button
+                IconButton(
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isFavorite = !isFavorite;
+                    });
+                    // TODO: Add to favorites functionality
+                  },
+                ),
+                // Share Button
+                IconButton(
+                  icon: const Icon(Icons.share, color: Colors.white),
+                  onPressed: () {
+                    // TODO: Implement share functionality
+                  },
+                ),
+              ],
+            ),
 
-          // Salon Info Section
-          SliverToBoxAdapter(
-            child: Padding(
+            // Persistent Tab Bar
+            SliverPersistentHeader(
+              delegate: _SliverAppBarDelegate(
+                TabBar(
+                  controller: _tabController,
+                  labelColor: primaryColor,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: primaryColor,
+                  tabs: const [
+                    Tab(text: 'Services'),
+                    Tab(text: 'Gallery'),
+                    Tab(text: 'Reviews'),
+                  ],
+                ),
+              ),
+              pinned: true,
+            ),
+          ];
+        },
+        body: Column(
+          children: [
+            // Salon Info Section
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,7 +279,9 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                       Icon(Icons.phone, color: customColor),
                       const SizedBox(width: 8),
                       Text(
-                        widget.salon.phone ?? 'No phone number available',
+                        widget.salon.phone.isNotEmpty
+                            ? widget.salon.phone
+                            : 'No phone number available',
                         style: TextStyle(
                           fontSize: 16,
                           color: customColor,
@@ -248,7 +301,7 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    widget.salon.description.isEmpty
+                    widget.salon.description.isNotEmpty
                         ? widget.salon.description
                         : 'No description available',
                     style: TextStyle(
@@ -260,48 +313,32 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                 ],
               ),
             ),
-          ),
 
-          // Tab Bar
-          SliverPersistentHeader(
-            delegate: _SliverAppBarDelegate(
-              TabBar(
+            // Tab Content
+            Expanded(
+              child: TabBarView(
                 controller: _tabController,
-                labelColor: primaryColor,
-                unselectedLabelColor: Colors.grey,
-                indicatorColor: primaryColor,
-                tabs: const [
-                  Tab(text: 'Services'),
-                  Tab(text: 'Gallery'),
-                  Tab(text: 'Reviews'),
+                children: [
+                  // Services Tab
+                  _buildServicesTab(),
+
+                  // Gallery Tab
+                  _buildGalleryTab(),
+
+                  // Reviews Tab
+                  _buildReviewsTab(),
                 ],
               ),
             ),
-            pinned: true,
-          ),
-
-          // Tab Content
-          SliverFillRemaining(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                // Services Tab
-                _buildServicesTab(),
-
-                // Gallery Tab
-                _buildGalleryTab(),
-
-                // Reviews Tab
-                _buildReviewsTab(),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.grey.shade900
+              : Colors.white,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
@@ -382,7 +419,7 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      price != null
+                      price.toString().isNotEmpty
                           ? '₱${price.toStringAsFixed(2)}'
                           : 'Price varies',
                       style: TextStyle(
@@ -394,7 +431,7 @@ class _SalonDetailPageState extends State<SalonDetailPage>
                     const SizedBox(height: 8),
                     OutlinedButton(
                       onPressed: () {
-                        // TODO: Add to cart or book directly
+                        // TODO: Navigate to booking page
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: primaryColor,
